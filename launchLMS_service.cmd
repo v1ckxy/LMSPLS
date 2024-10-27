@@ -42,7 +42,46 @@ if not exist "%Temp%" mkdir "%Temp%"
 if not exist "%LocalAppData%\LM-Studio\Update.exe" (
 	echo LM Studio was not found. Please perform a normal launch instead to install it first.
 	pause
+	exit
 ) else (
+	set "inputFile=%AppData%\LM Studio\settings.json"
+	echo inputFile:!inputFile!
+	set "tempFile=%AppData%\LM Studio\settings_temp.json"
+	echo tempFile:!tempFile!
+	
+	set searchString=downloadsFolder
+	echo !searchString!
+	
+	rem "downloadsFolder": "..\\..\\..\\..\\.cache\\lm-studio\\models",
+	set replaceString=  "downloadsFolder": "%UserProfile:\=\\%\\.cache\\lm-studio\\models",
+	echo !replaceString!
+	
+	
+	if not exist "!inputFile!" (
+		echo File !inputFile! not found, will be generated upon launch and fixed on next run.
+		pause
+	)
+
+	(
+		rem Recreate config file with a modified downloadsFolder
+		for /f "usebackq delims=" %%A in ("!inputFile!") do (
+			set "line=%%A"
+			echo !line! | findstr /c:!searchString! >nul
+			if !errorlevel! equ 0 (
+				rem Replace line if the string is found
+				echo !replaceString!
+			) else (
+				rem Keep rest of lines
+				echo !line!
+			)
+		)
+	) > "!tempFile!"
+
+	rem Replace original settings file with modified one
+	move /y "!tempFile!" "!inputFile!" >nul
+	echo File !inputFile! fixed, launching app...
+
+	rem Start app in service mode
 	call "%LocalAppData%\LM-Studio\Update.exe" --processStart "LM Studio.exe" --process-start-args "--run-as-service"
 	rem Workaround - LMS recreates config-presets during launch under %UserProfile%
 	if exist "%OriginalUserProfile%\.cache\lm-studio" (
