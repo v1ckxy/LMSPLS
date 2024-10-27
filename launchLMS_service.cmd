@@ -39,11 +39,12 @@ if not exist "%LocalAppData%" mkdir "%LocalAppData%"
 if not exist "%AppData%" mkdir "%AppData%"
 if not exist "%Temp%" mkdir "%Temp%"
 
-if not exist "%LocalAppData%\LM-Studio\Update.exe" (
+if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
 	echo LM Studio was not found. Please perform a normal launch instead to install it first.
 	pause
 	exit
 ) else (
+	rem Modify models path in settings.json to the current drive
 	set "inputFile=%AppData%\LM Studio\settings.json"
 	echo inputFile:!inputFile!
 	set "tempFile=%AppData%\LM Studio\settings_temp.json"
@@ -82,7 +83,8 @@ if not exist "%LocalAppData%\LM-Studio\Update.exe" (
 	echo File !inputFile! fixed, launching app...
 
 	rem Start app in service mode
-	call "%LocalAppData%\LM-Studio\Update.exe" --processStart "LM Studio.exe" --process-start-args "--run-as-service"
+	call "%LocalAppData%\LM-Studio\LM Studio.exe" --run-as-service
+
 	rem Workaround - LMS recreates config-presets during launch under %UserProfile%
 	if exist "%OriginalUserProfile%\.cache\lm-studio" (
 		timeout /t 5

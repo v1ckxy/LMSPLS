@@ -59,6 +59,7 @@ if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
 		exit
 	)
 ) else (
+	rem Modify models path in settings.json to the current drive
 	set "inputFile=%AppData%\LM Studio\settings.json"
 	echo inputFile:!inputFile!
 	set "tempFile=%AppData%\LM Studio\settings_temp.json"
@@ -95,8 +96,9 @@ if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
 	rem Replace original settings file with modified one
 	move /y "!tempFile!" "!inputFile!" >nul
 	echo File !inputFile! fixed, launching app...
-	
-	"%LocalAppData%\LM-Studio\LM Studio.exe"
+
+	rem Start app
+	call "%LocalAppData%\LM-Studio\LM Studio.exe"
 	
 	rem Workaround - LMS recreates config-presets during launch under %UserProfile%
 	if exist "%OriginalUserProfile%\.cache\lm-studio" (
