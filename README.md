@@ -27,5 +27,18 @@ Those config-presets aren't actually being downloaded from the internet, but rec
 I've set up the script to grab those and sync them with the portable dirs:  
 The path is being used by electron upon launch and the app will crash if its forcefully deleted while it's running (content is not)  
 
+## Folder Icon
+You can either...  
+- Execute setFolderIcon.cmd  
+
+or
+
+- Open a CMD/terminal window inside the portable app dir and execute three comands:
+```
+attrib +R .
+attrib +H +S +R desktop.ini
+attrib +H +S +R LMSFolder.ico
+```
+
 ## License
 GNU General Public License v3.0
