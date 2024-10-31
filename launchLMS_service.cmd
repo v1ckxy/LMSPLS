@@ -87,10 +87,9 @@ if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
 
 	rem Workaround - LMS recreates config-presets during launch under %UserProfile%
 	if exist "%OriginalUserProfile%\.cache\lm-studio" (
-		timeout /t 5
+		timeout /t 3
 		echo Syncing files and cleaning up leftovers
 		robocopy "%OriginalUserProfile%\.cache\lm-studio" "%UserProfile%\.cache\lm-studio" /E /XC /XN /XO
 		del /f /s /q "%OriginalUserProfile%\.cache\lm-studio"
-		timeout /t 3
 	)
 )

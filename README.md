@@ -1,4 +1,4 @@
-# LMStudio Portable Launch Script (LMS PLS)
+# LM Studio Portable Launch Script (LMS PLS)
 
 ## Installation
 Just create a directory and put the .cmd files inside it:
@@ -36,8 +36,8 @@ or
 - Open a CMD/terminal window inside the portable app dir and execute three comands:
 ```
 attrib +R .
-attrib +H +S +R desktop.ini
-attrib +H +S +R LMSFolder.ico
+attrib +H +S desktop.ini
+attrib +H +S icon.ico
 ```
 
 ## License

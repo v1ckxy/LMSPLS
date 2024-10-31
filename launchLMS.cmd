@@ -44,20 +44,22 @@ set "InstallerPath=%CurrentPath%\Installers"
 if not exist "%InstallerPath%" mkdir "%InstallerPath%"
 
 for /f "delims=" %%A in ('dir /b /a-d /on "%InstallerPath%\LM-Studio-*-Setup.exe" 2^>nul') do ( set "InstallerExe=%%A" )
+echo InstallerExe:"%InstallerExe%"
 
 rem Application Startup
 if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
 	echo LM Studio not found. Performing installation...
-	if "%InstallerExe%"=="" (
+	if "%InstallerExe%" == "" (
 		echo Please download LM Studio from https://lmstudio.ai/download and put the LM-Studio-Setup.exe file inside "%InstallerPath%"
 		pause
 		exit
-	) else ( 
-		echo Launching installer %InstallerExe% from "%InstallerPath%"
-		call %InstallerPath%\%InstallerExe%
+	) else (
+		echo Launching installer "%InstallerExe%" from "%InstallerPath%"
+		call "%InstallerPath%\%InstallerExe%"
 		pause
 		exit
 	)
+
 ) else (
 	rem Modify models path in settings.json to the current drive
 	set "inputFile=%AppData%\LM Studio\settings.json"
@@ -106,6 +108,5 @@ if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
 		echo Syncing files and cleaning up leftovers
 		robocopy "%OriginalUserProfile%\.cache\lm-studio" "%UserProfile%\.cache\lm-studio" /E /XC /XN /XO
 		del /f /s /q "%OriginalUserProfile%\.cache\lm-studio"
-		timeout /t 5
 	)
 )
