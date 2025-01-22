@@ -43,11 +43,11 @@ rem Check if latest installer is ready for installation, in case needed
 set "InstallerPath=%CurrentPath%\Installers"
 if not exist "%InstallerPath%" mkdir "%InstallerPath%"
 
-for /f "delims=" %%A in ('dir /b /a-d /on "%InstallerPath%\LM-Studio-*-Setup.exe" 2^>nul') do ( set "InstallerExe=%%A" )
+for /f "delims=" %%A in ('dir /b /a-d /on "%InstallerPath%\LM-Studio-*.exe" 2^>nul') do ( set "InstallerExe=%%A" )
 echo InstallerExe:"%InstallerExe%"
 
 rem Application Startup
-if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
+if not exist "%LocalAppData%\Programs\LM Studio\LM Studio.exe" (
 	echo LM Studio not found. Performing installation...
 	if "%InstallerExe%" == "" (
 		echo Please download LM Studio from https://lmstudio.ai/download and put the LM-Studio-Setup.exe file inside "%InstallerPath%"
@@ -70,14 +70,14 @@ if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
 	set searchString=downloadsFolder
 	echo !searchString!
 	
-	rem "downloadsFolder": "..\\..\\..\\..\\.cache\\lm-studio\\models",
-	set replaceString=  "downloadsFolder": "%UserProfile:\=\\%\\.cache\\lm-studio\\models",
+	rem "downloadsFolder": "..\\..\\..\\..\\.lmstudio\\models",
+	set replaceString=  "downloadsFolder": "%UserProfile:\=\\%\\.lmstudio\\models",
 	echo !replaceString!
 	
 	
 	if not exist "!inputFile!" (
 		echo File !inputFile! not found, will be generated upon launch and fixed on next run.
-		pause
+		timeout /t 8
 	)
 
 	(
@@ -100,13 +100,13 @@ if not exist "%LocalAppData%\LM-Studio\LM Studio.exe" (
 	echo File !inputFile! fixed, launching app...
 
 	rem Start app
-	call "%LocalAppData%\LM-Studio\LM Studio.exe"
+	call "%LocalAppData%\Programs\LM Studio\LM Studio.exe"
 	
 	rem Workaround - LMS recreates config-presets during launch under %UserProfile%
-	if exist "%OriginalUserProfile%\.cache\lm-studio" (
-		timeout /t 3
+	if exist "%OriginalUserProfile%\.lmstudio" (
+		timeout /t 2
 		echo Syncing files and cleaning up leftovers
-		robocopy "%OriginalUserProfile%\.cache\lm-studio" "%UserProfile%\.cache\lm-studio" /E /XC /XN /XO
-		del /f /s /q "%OriginalUserProfile%\.cache\lm-studio"
+		robocopy "%OriginalUserProfile%\.lmstudio" "%UserProfile%\.lmstudio" /E /XC /XN /XO
+		del /f /s /q "%OriginalUserProfile%\.lmstudio"
 	)
 )
