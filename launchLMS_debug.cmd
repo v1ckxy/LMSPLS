@@ -58,6 +58,30 @@ if not exist "%InstallerPath%" mkdir "%InstallerPath%"
 
 for /f "delims=" %%A in ('dir /b /a-d /on "%InstallerPath%\LM-Studio-*.exe" 2^>nul') do ( set "InstallerExe=%%A" )
 
+rem Skip functions and go directly to :main
+goto :main
+
+:cleanUpRegistry
+   rem LM Studio Installer registry clean-up
+   set "regKey=HKEY_CURRENT_USER\Software\c6dbe996-22a9-5998-b542-7abe33da3b83"
+   echo [%DATE% %TIME:,=.%] Checking if key "%regKey%" exists...
+   reg query "%regKey%" >nul
+   if %errorlevel% equ 0 (
+      reg delete "%regKey%" /f
+   ) else (
+      echo [%DATE% %TIME:,=.%] Perfect, key doesn't exist.
+   )
+   set "regKey=HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\c6dbe996-22a9-5998-b542-7abe33da3b83"
+   echo [%DATE% %TIME:,=.%] Checking if key "%regKey%" exists...
+   reg query "%regKey%" >nul
+   if %errorlevel% equ 0 (
+      reg delete "%regKey%" /f
+   ) else (
+      echo [%DATE% %TIME:,=.%] Perfect, key doesn't exist.
+   )
+exit /b 0
+
+:main
 rem Application Startup
 if not exist "%AppPath%\LM Studio.exe" (
    echo [%DATE% %TIME:,=.%] LM Studio not installed in "%AppPath%"
@@ -119,23 +143,3 @@ if exist "%AppPath%\LM Studio.exe" (
    echo Please check why LM Studio was not properly installed under %AppPath%
    pause && exit
 )
-
-:cleanUpRegistry
-rem LM Studio Installer registry clean-up
-set "regKey=HKEY_CURRENT_USER\Software\c6dbe996-22a9-5998-b542-7abe33da3b83"
-echo [%DATE% %TIME:,=.%] Checking if key "%regKey%" exists...
-reg query "%regKey%" >nul
-if %errorlevel% equ 0 (
-   reg delete "%regKey%" /f
-) else (
-   echo [%DATE% %TIME:,=.%] Perfect, key doesn't exist.
-)
-set "regKey=HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\c6dbe996-22a9-5998-b542-7abe33da3b83"
-echo [%DATE% %TIME:,=.%] Checking if key "%regKey%" exists...
-reg query "%regKey%" >nul
-if %errorlevel% equ 0 (
-   reg delete "%regKey%" /f
-) else (
-   echo [%DATE% %TIME:,=.%] Perfect, key doesn't exist.
-)
-exit /b 0
