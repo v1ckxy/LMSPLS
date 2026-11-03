@@ -42,9 +42,9 @@ Being **X**:
 NSIS Installer will check registry for previously installed versions and will uninstall the previously installed version if found.\
 To avoid that, the script will try to clean-up these registry keys BEFORE and AFTER installation.
 
-Current version (**0.3.9 build 6**) registry Keys for "current user" installation :
-  1. HKCU\\Software\\c6dbe996-22a9-5998-b542-7abe33da3b83
-  2. HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\c6dbe996-22a9-5998-b542-7abe33da3b83
+Current version (**0.4.28 build 2**) registry Keys for "current user" installation :
+  1. HKCU\\Software\\LM-Studio
+  2. HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\LM-Studio
 
 > ℹ️ Not tested under system-wide installs
 
