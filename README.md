@@ -1,5 +1,5 @@
 # LM Studio Portable Launch Script (LMS PLS)
-> ℹ️ Latest version tested: **0.3.9 build 6**
+> ℹ️ Latest version tested: **0.4.28 build 2**
 
 ## Installation
 Just create a directory and put the .cmd files inside it:
