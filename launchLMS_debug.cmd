@@ -63,7 +63,7 @@ goto :main
 
 :cleanUpRegistry
    rem LM Studio Installer registry clean-up
-   set "regKey=HKEY_CURRENT_USER\Software\c6dbe996-22a9-5998-b542-7abe33da3b83"
+   set "regKey=HKEY_CURRENT_USER\Software\LM-Studio"
    echo [%DATE% %TIME:,=.%] Checking if key "%regKey%" exists...
    reg query "%regKey%" >nul
    if %errorlevel% equ 0 (
@@ -71,7 +71,7 @@ goto :main
    ) else (
       echo [%DATE% %TIME:,=.%] Perfect, key doesn't exist.
    )
-   set "regKey=HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\c6dbe996-22a9-5998-b542-7abe33da3b83"
+   set "regKey=HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Uninstall\LM-Studio"
    echo [%DATE% %TIME:,=.%] Checking if key "%regKey%" exists...
    reg query "%regKey%" >nul
    if %errorlevel% equ 0 (
@@ -94,7 +94,7 @@ if not exist "%AppPath%\LM Studio.exe" (
       echo [%DATE% %TIME:,=.%] Performing initial registry cleanup...
       call :cleanUpRegistry
       echo [%DATE% %TIME:,=.%] Launching installer "%InstallerExe%" from "%InstallerPath%"
-      call "%InstallerPath%\%InstallerExe%" /S /D="%AppPath%"
+      call "%InstallerPath%\%InstallerExe%" /S /D=%AppPath%
       echo [%DATE% %TIME:,=.%] LM Studio installed, cleaning up registry and launching it...
       call :cleanUpRegistry
       timeout /t 10
